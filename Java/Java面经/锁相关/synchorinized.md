@@ -63,11 +63,11 @@ public class SyncTest {
 
 
 而对于synchronized方法而言，javac为其生成了一个ACC_SYNCHRONIZED关键字，在JVM进行方法调用时，发现调用的方法被ACC_SYNCHRONIZED修饰，则会先尝试获得锁。
-![](2021-04-07-20-22-55.png)
+![](images/2021-04-07-20-22-55.png)
 
 
 在JVM中，对象的内存布局  由 对象头+ 实例数据 + 对其填充三部分组成，而对象头包括 Mark Word+指向对象所属的类指针组成。  Mark Word 主要用于存储对象自身的运行时数据，哈希码，GC分代年龄，锁标志等。
-![](2021-04-07-20-29-16.png)
+![](images/2021-04-07-20-29-16.png)
 
 
 ### 偏向锁
@@ -106,7 +106,7 @@ public class SyncTest {
 
 ### 重量级锁
 重量级锁也就是通常说synchronized的对象锁，锁标识位为10，其中指针指向的是monitor对象（也称为管程或监视器锁）的起始地址。每个对象都存在着一个 monitor 与之关联，对象与其 monitor 之间的关系有存在多种实现方式，如monitor可以与对象一起创建销毁或当线程试图获取对象锁时自动生成，但当一个 monitor 被某个线程持有后，它便处于锁定状态。
-![](2021-04-09-11-03-13.png)
+![](images/2021-04-09-11-03-13.png)
 在Java虚拟机（HotSpot）中，monitor是由**ObjectMonitor**实现的，其主要数据结构如下（位于HotSpot虚拟机源码ObjectMonitor.hpp文件，C++实现的）
 
 ```c++
@@ -157,7 +157,7 @@ ObjectMonitor中有两个队列，_WaitSet 和 _EntryList，用来保存ObjectWa
 
 
 ### 锁的优缺点
-![](2021-04-07-22-11-01.png)
+![](images/2021-04-07-22-11-01.png)
 
 
 

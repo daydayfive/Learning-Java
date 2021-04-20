@@ -10,7 +10,7 @@
 
 ThreadLocal是JDK包提供的，它提供线程本地变量，如果创建了ThreadLocal变量，那么访问这个变量的每个线程都会有这个变量的一个副本，在实际多线程操作的时候，操作的是自己本地内存中的变量，从而规避了线程安全问题，如下图所示
 
-![](2021-04-09-16-08-44.png)
+![](images/2021-04-09-16-08-44.png)
 
 ## ThreadLocal的简单使用
 ```java
@@ -58,12 +58,12 @@ public class ThreadLocalTest {
 ```
 
 实验结果：
-![](2021-04-09-16-54-34.png)
+![](images/2021-04-09-16-54-34.png)
 
 ## ThreadLocal 的实现原理
 
 根据ThreadLocal的类图结构
-![](2021-04-09-16-30-53.png)
+![](images/2021-04-09-16-30-53.png)
 
 由上图可知，Thread类中由两个变量threadLocals 和 inheritableThreadLocals,二者都是ThreadLocal 内部类ThreadLocalMap类型的变量，我们通过查看内部ThreadLocalMap可以发现它类似于一个HashMap,只有当线程第一次调用ThreadLocal的set或者get方法的时候才会创建他们。
 
@@ -140,12 +140,12 @@ public void remove() {
 
 
 
-![](2021-04-09-19-27-16.png)
+![](images/2021-04-09-19-27-16.png)
 
 以上 ThreadLocal Ref -> ThreadLocal  : 强引用
 
 ThreadLocalMap Entry key ->ThreadLocal : 弱引用
-![](2021-04-09-19-35-19.png)
+![](images/2021-04-09-19-35-19.png)
 
 只要ThreadLocal 没被回收(使用时强引用不置null)，那ThreadLocal Entry key 的指向就不会在GC时 断开被回收，也没有内存泄漏一说法。
 
