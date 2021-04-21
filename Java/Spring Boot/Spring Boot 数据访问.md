@@ -192,7 +192,7 @@ StatViewServlet的用途包括：
 
 ```
 
-![](2021-03-27-21-51-06.png)
+![](images/2021-03-27-21-51-06.png)
 
 
 
@@ -272,7 +272,7 @@ SpringBoot官方的starter： spring-boot-starter-*
 </dependency>
 ```
 
-![](2021-03-28-13-14-12.png)
+![](images/2021-03-28-13-14-12.png)
 
 #### 1.配置模式
 * 全局配置文件

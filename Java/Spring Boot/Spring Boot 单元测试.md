@@ -13,7 +13,7 @@ JUnit Jupiter:Junit Jupiter提供了JUnit5的新的编程模型，是Junit5新�
 
 JUnit Vintage:由于JUint已经发展多年，为了照顾老的项目，JUnit Vintage提供了兼容JUnit4.x,Junit3.x的测试引擎。
 
-![](2021-03-29-20-48-40.png)
+![](images/2021-03-29-20-48-40.png)
 
 注意：
 SpringBoot 2.4 以上版本移除了默认对 Vintage 的依赖。如果需要兼容junit4需要自行引入（不能使用junit4的功能 @Test）
@@ -33,7 +33,7 @@ JUnit 5’s Vintage Engine Removed from spring-boot-starter-test,如果需要继
     </exclusions>
 </dependency>
 ```
-![](2021-03-29-20-52-17.png)
+![](images/2021-03-29-20-52-17.png)
 
 
 现在版本：
@@ -103,7 +103,7 @@ public class TestDemo {
 
 ### 1. 简单断言
 用来对单个值进行简单的验证。如：
-![](2021-03-29-21-06-06.png)
+![](images/2021-03-29-21-06-06.png)
 
 ```java
 @Test

@@ -3,7 +3,7 @@
 #Spring Boot功能整合-web
 
 ##核心功能
-![](2021-03-22-21-31-44.png)
+![](images/2021-03-22-21-31-44.png)
 
 
 ##配置文件
@@ -140,7 +140,7 @@ person:
 ```
 
 ##web开发
-![](2021-03-22-22-01-07.png)
+![](images/2021-03-22-22-01-07.png)
 ###1.Spring MVC自动配置概览
 https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-developing-web-applications
 
@@ -360,7 +360,7 @@ public class ResourceProperties {
 * 现在： /user GET-获取用户  DELETE-删除用户  PUT-修改用户  POST-保存用户
 * 核心Filter; HiddenHttpMethodFilter
   
-![](2021-03-23-20-14-04.png)
+![](images/2021-03-23-20-14-04.png)
 ```yaml
 spring:
   mvc:
@@ -424,11 +424,11 @@ Rest使用客户端工具：
 
 
 #####2.请求映射原理
-![](2021-03-23-20-52-35.png)
+![](images/2021-03-23-20-52-35.png)
 
 
 SpringMVC功能分析都从 org.springframework.web.servlet.DispatcherServlet-》doDispatch（）
-![](2021-03-23-21-06-20.png)
+![](images/2021-03-23-21-06-20.png)
 ```java
 protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpServletRequest processedRequest = request;
@@ -450,11 +450,11 @@ protected void doDispatch(HttpServletRequest request, HttpServletResponse respon
                 
                 //HandlerMapping：处理器映射。/xxx->>xxxx
 ```
-![](2021-03-23-21-11-05.png)
+![](images/2021-03-23-21-11-05.png)
 
 RequestMappingHandlerMapping：保存了所有@RequestMapping 和handler的映射规则。
 
-![](2021-03-23-21-13-31.png)
+![](images/2021-03-23-21-13-31.png)
 所有的请求映射都在HandlerMapping中
 
 
@@ -574,7 +574,7 @@ https://www.yuque.com/atguigu/springboot/vgzmgh
 
 
 ###4.数据响应与内容协商
-![](2021-03-24-16-49-47.png)
+![](images/2021-03-24-16-49-47.png)
 #### 1.响应json
 #####1.jackson.jar+@ResponseBody
 ```xml
@@ -590,18 +590,18 @@ web场景自动引入了json场景
       <scope>compile</scope>
     </dependency>
 ```
-![](2021-03-24-16-51-45.png)
+![](images/2021-03-24-16-51-45.png)
 
 给前端自动返回json数据
 
 1. 返回值解析器
 
-![](2021-03-24-17-11-25.png)
+![](images/2021-03-24-17-11-25.png)
 
 
 
 2. 返回值解析器原理
-   ![](2021-03-24-17-11-55.png)
+   ![](images/2021-03-24-17-11-55.png)
 
 
 #####1.2 Spring MVC支持哪些返回值
@@ -851,9 +851,9 @@ public class AdminWebConfig implements WebMvcConfigurer {
 6. **前面的步骤有任何异常都会直接倒序触发**  afterCompletion
 7. 也没面成功渲染完成以后，也会倒序触发   afterCompletion 
 
-![](2021-03-27-14-14-11.png)
+![](images/2021-03-27-14-14-11.png)
 
-![](2021-03-27-14-14-23.png)
+![](images/2021-03-27-14-14-23.png)
 
 ####7.文件上传
 
@@ -921,7 +921,7 @@ public class AdminWebConfig implements WebMvcConfigurer {
                          @RequestPart("photos") MultipartFile[] photos)
 
 ```
-![](2021-03-27-15-13-08.png)!
+![](images/2021-03-27-15-13-08.png)!
 
 
 ####8. 异常处理
@@ -930,15 +930,15 @@ public class AdminWebConfig implements WebMvcConfigurer {
 * 默认情况下，SpringBoot 提供/error 处理所有错误的映射
 * 对于机器客户端，它将生成JSON响应，其中包含错误，HTTP 状态和异常消息的详细信息。对于浏览器客户端，响应一个“whitelable”错误视图，以HTML格式呈现相同的数据
 * 
-![](2021-03-27-16-06-14.png)
+![](images/2021-03-27-16-06-14.png)
 
 
-![](2021-03-27-16-07-10.png)
+![](images/2021-03-27-16-07-10.png)
 
 * 要对其进行自定义，添加View 解析为error
 * 要完全替换默认行为，可以实现 ErrorController 并注册该类型的Bean 定义，或添加 ErrorAttributes 类型的组件  以实现现有机制但替换其内容。、
 * error/下的4xx ,5xx 页面会被自动解析
-![](2021-03-27-16-12-25.png)
+![](images/2021-03-27-16-12-25.png)
 
 
 ######2. 异常处理步骤流程
@@ -947,14 +947,14 @@ public class AdminWebConfig implements WebMvcConfigurer {
 3. processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 4. **mv = processHandlerException**；处理handler发生的异常，处理完成返回ModelAndView；
    1. 遍历所有的 **handlerExceptionResolvers**，看谁能处理当前异常【HandlerExceptionResolver处理器异常解析器】
-   ![](2021-03-27-16-49-50.png)
+   ![](images/2021-03-27-16-49-50.png)
    2. 系统默认的异常解析器
-   ![](2021-03-27-16-50-16.png)
+   ![](images/2021-03-27-16-50-16.png)
     * DefaultErrorAttributes先来处理异常。把异常信息保存到rrequest域，并且返回null；
     * 默认没有任何人能处理异常，所以异常会被抛出
     * 如果没有任何人能处理最终底层就会发送 /error 请求。会被底层的BasicErrorController处理
     * 解析错误视图；遍历所有的  ErrorViewResolver  看谁能解析。
-  ![](2021-03-27-16-51-04.png)
+  ![](images/2021-03-27-16-51-04.png)
     * 默认的 DefaultErrorViewResolver ,作用是把响应状态码作为错误页的地址，error/500.html
     * 模板引擎最终响应这个页面 error/500.html
 
@@ -962,14 +962,14 @@ public class AdminWebConfig implements WebMvcConfigurer {
 #### 9. Web原生组件组入（Servlet,Filter,Listener）
 
 ##### 1. 使用Servlet API
-![](2021-03-27-17-12-35.png)
+![](images/2021-03-27-17-12-35.png)
 
 扩展：DispatchServlet 如何注册进来
 • 容器中自动配置了  DispatcherServlet  属性绑定到 WebMvcProperties；对应的配置文件配置项是 spring.mvc。
 • 通过 ServletRegistrationBean<DispatcherServlet> 把 DispatcherServlet  配置进来。
 • 默认映射的是 / 路径。
 
-![](2021-03-27-17-18-44.png)
+![](images/2021-03-27-17-18-44.png)
 
 这就导致了两个Servlet 发送请求时，根据精确优选原则
 
@@ -1014,4 +1014,4 @@ public class MyRegistConfig {
 
 
 #### 11.定制化
-![](2021-03-27-19-47-01.png)
+![](images/2021-03-27-19-47-01.png)
