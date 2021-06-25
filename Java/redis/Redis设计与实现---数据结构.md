@@ -68,7 +68,7 @@
   * 每个链表使用list结构来表示
 
   ```c
-  ypedef struct list{
+  typedef struct list{
       //表头节点
       listNode *head;
       
