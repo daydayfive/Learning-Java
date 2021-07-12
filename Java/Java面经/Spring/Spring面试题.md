@@ -65,31 +65,38 @@ JDK动态代理通过反射来接收被代理的类，并且要求被代理的�
 
 使用aop方式实现的，
 
-缺点：注解的最细力度作用于方法上，如果像代码块也有事务需求，只能变通下，将代码块变为方法。
+缺点：注解的最细粒度作用于方法上，如果像代码块也有事务需求，只能变通下，将代码块变为方法。
 
 
-## 9. spring 自动装配
-当bean 在spring 容器 中组合在一起时，它被称为装配或bean装配。 Spring 容器需要知道需要什么bean以及容器应该使用依赖注入来将bean 绑定在一起，同时装配bean。
+## 8. spring 自动装配
+在spring中，对象无需自己查找或创建与其关联的其他对象，由容器负责把需要协作的对象引用赋予各个对象，使用Autowired 来配置自动装载模式：
 
-spring容器能够自动装配bean。也就是通过检查 beanFactory 的内容让spring自动解析bean 的协作者。自动装配的不同模式：
+spring框架xml配置中共有5种自动装配：
+（1）no：默认的方式是不进行自动装配的，通过手工设置ref属性来进行装配bean
+（2）byName：通过bean 的名称进行自动装配，如果一个bean的property 与另一bean 的名称相同，就进行装配
+（3）byType：通过参数的数据类型进行自动装配
+（4）constructor：利用构造函数进行装配，并且构造函数的参数通过byType进行装配
+（5） autodetect:自动
 
 
-自动装配容易覆盖
+基于注解的方式：
+使用@Autowired注解来指定自动装配指定的bean
 
+（1）@Autowired  默认按照类型来装配注入的，默认情况下它要求依赖对象必须存在
+ (2) @Resource   默认按照名称来注入的，只有找不到名称匹配的bean来装配注入。
 
-
-## 4. 有多少种方式完成依赖注入
+## 9. 有多少种方式完成依赖注入
 * setter注入
 * 构造函数注入
 * 基于注解的注入（接口注入）
   （@Autowired）
 
-## 5. 依赖注入发生在什么时刻
+## 10. 依赖注入发生在什么时刻
 * 第一次通过getBean 方法 向IOC索要Bean时，IOC容器触发依赖注入。
 * 在Bean定义资源中为元素配置了lazy-init属性，即让容器在解析注册Bean定义时进行预实例化，触发依赖注入
 
 
-## 6. Bean的作用域
+## 11. Bean的作用域
 在Spring中，Bean 是组成 应用程序的主体及由Spring IOC容器所管理的对象，被称之为bean。 
 
 singleton：每个spring ioc 容器仅有一个单实例。
@@ -100,7 +107,7 @@ gloabal session-类似于session，不过仅在portlet web应用中才有意义�
 
 后面三种仅当用户使用支持web 的applicationcontext 是才使用。
 
-## 7. bean的生命周期
+## 12. bean的生命周期
 
 1. spring容器根据配置中的bean定义， 实例化bean。
 2. spring使用依赖注入填充所有属性，如bean中所定义的配置
@@ -111,3 +118,38 @@ gloabal session-类似于session，不过仅在portlet web应用中才有意义�
 7. 执行preProcessorAfterInitialization()方法
 8. bean 实现 DisposableBean 接口，当 spring 容器关闭时，会调用destory()
 9. 调用destory()方法
+
+
+
+## 13. Spring 常用的注解
+
+1. 声明bean的注解
+@Component 组件，没有明确的角色
+@Service （Service层）
+@Repository （Dao层）
+@Controller （Controller层）
+
+2. 注入bean的注解
+@Autowired （）
+@Resource
+
+3. java配置类
+@Configuration  声明当前类为配置类
+@Bean  注解作用在方法上，声明当前方法的返回值是一个bean，代替xml的方式
+@ComponentScan 用于对compoent 扫描
+4. 切面（AOP）相关注解
+@Aspect  声明一个切面
+使用@After,@Before,@Around 定义 advice ，可直接将拦截规则作为参数
+
+
+5. @Bean 的属性支持
+@Scope 定义bean 的作用域
+
+6. @Value 为属性注入值
+
+
+7. @Enable*注解说明
+@EnableAspectJAutoProxy
+@EnableAsync
+@EnableWebMvc
+@EnableTransactionManagement 开启注解
