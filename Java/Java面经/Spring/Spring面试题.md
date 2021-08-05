@@ -55,6 +55,7 @@ Spring IOC容器的初始化简单的可以分为三个过程：
 
 Spring AOP使用的动态代理，所谓的动态代理就是说AOP 框架不会去修改字节码，而是在内存中临时为方法生成一个AOP对象，这个AOP对象包含了目标对象的全部方法，并且在特点的切点做了增强处理，并回调原对象的方法。
 
+
 Spring AOP 的动态代理主要有两种方式，JDK动态代理和CGLIB动态里。
 JDK动态代理通过反射来接收被代理的类，并且要求被代理的类必须实现一个接口。
 如果目标类没有实现接口，那么Spring AOP 会选择使用CGLIB 来动态代理类。 CGLIB，是一个代码生成的类库，可以在运行时动态的生成某个类的子类，注意，CGLIB是通过继承的方式做的动态代理，因此如果某个类被标记为final，那么它是无法使用CGLIB做动态代理的。
@@ -81,9 +82,8 @@ spring框架xml配置中共有5种自动装配：
 
 基于注解的方式：
 使用@Autowired注解来指定自动装配指定的bean
-
-（1）@Autowired  默认按照类型来装配注入的，默认情况下它要求依赖对象必须存在
- (2) @Resource   默认按照名称来注入的，只有找不到名称匹配的bean来装配注入。
+（1） @Autowired  默认按照类型来装配注入的，默认情况下它要求依赖对象必须存在
+（2） @Resource   默认按照名称来注入的，只有找不到名称匹配的bean来装配注入。
 
 ## 9. 有多少种方式完成依赖注入
 * setter注入
@@ -148,7 +148,7 @@ gloabal session-类似于session，不过仅在portlet web应用中才有意义�
 6. @Value 为属性注入值
 
 
-7. @Enable*注解说明
+7. @Enable *注解说明
 @EnableAspectJAutoProxy
 @EnableAsync
 @EnableWebMvc
