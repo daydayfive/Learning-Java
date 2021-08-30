@@ -31,3 +31,12 @@ application.properties.server.port=8090
 ## 6.什么是yaml
 yaml是一种数据序列化语言。它通常用于配置文件。
 
+
+
+## 7. SpringBoot是如何启动Tomcat的
+1. 首先，SpringBoot在启动时会先创建一个Spring容器
+2. 在创建Spring容器过程中，会利用@ConditionalOnClass技术来判断当前classpath是否存在Tomcat依赖，如果存在则会生成一个启动Tomcat的Bean
+3. Spring 容器创建完之后，就会获取启动Tomcat的Bean，并创建Tomcat对象，并绑定端口等，然后启动Tomcat
+
+## 8.SpringBoot
+

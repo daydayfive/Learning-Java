@@ -16,7 +16,7 @@ Spring MVC总体流程是这样的：
 2) DispatcherServlet收到请求后，调用HandlerMapping 处理映射器，请求获取Handler；
 3) 处理器映射器根据请求url找到具体的处理器Handler，生成处理器对象即处理器拦截器，一并返回给DispatcherServlet；
 4) DispatcherServlet 调用  HandlerAdapter处理器适配器，请求执行Handler；
-5) HanderAdapter 经过适配调用 ，进行处理业务逻辑；
+5) HanderAdapter 经过适配调用 (Controller)，进行处理业务逻辑；
 6) Handler 执行完成返回ModelAndView；
 7) HandlerAdapter 将Handler 执行结果ModelAndView 返回给DispatcherServlet；
 8) DispatcherServlet将ModelAndView传给ViewResolver视图解析器进行解析；
