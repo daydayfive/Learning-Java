@@ -80,10 +80,51 @@ JDK动态代理通过反射来接收被代理的类，并且要求被代理的�
 10. Spring事务的传播机制是Spring事务自己实现的，也是Spring事务中最复杂的
 11. Spring事务的传播机制是基于数据库连接来做的，一个数据库连接一个事务，如果传播机制配置为需要新开一个事务，实际上就是先建立一个数据库连接，在此新数据库连接上执行sql
 
+## Spring事务传播机制
+多个事务方法相互调用时，事务如何在这些方法间传播
+> 方法A是一个事务的方法，方法A执行过程中调用了方法B，那么方法B有无事务以及方法B对事务的要求不同都会对方法A的事务具体执行造成影响，同时方法A的事务对方法B的事务执行也有影响，这种影响具体是什么就由两个方法所定义的事务传播类型所决定。
+
+REQUIRED(Spring默认的事务传播类型)：如果当前没有事务，则自己新建一个事务，如果当前存在事务，则加入这个事务。
+
+SUPPORTS:当前存在事务，则加入当前事务，如果当前没有事务，就以非事务方法执行。
+
+MANDATORY：当前存在事务，则加入当前事务，如果当前事务不存在，则抛出异常。
+
+REQUIRES_NEW: 创建一个新事务，如果存在当前事务，则挂起该事务。（各自回滚自己的）
+
+NOT_SUPPORTED:以非事务方式执行，如果当前存在事务，则挂起当前事务
+
+NEVER:不使用事务，则如果当前事务存在，则抛出异常
+
+NESTED:如果当前事务存在，则在嵌套事务中执行，否则REQUIRED的操作一样（开启一个事务）
+
+
+
+
 ## @Transactional失效
+
+Spring事务的原理是AOP，进行了切面增强，那么失效的根本原因是这个AOP不起作用了！常见情况有如下几种
+
+1. 发生自调用，类里面使用this调用本类的方法（this通常省略），此时这个this对象不是代理类，而是UserService本身
+   让this变为UserService本身即可
+
+2. 方法不是public的
+   @Transactional 只能用于public的方法上，否则事务不会实现，如果要用到非public方法上，可以开启AspectJ代理模式。
+
+3. 数据库不支持事务（MyIsam）
+4. 没有被spring管理（该类没有被spring管理 ，如没有@controller，@service）
+5. 异常不会回滚，事务不会回滚（或者抛出的异常没有被定义，默认为RuntimeException）
+（try catrch）
+
+
+
+
+
+
 因为Spring事务是基于代理来实现的，所以某个加了@Transactional的方法只有是被代理对象调用时，那么这个注解才会生效，所以如果是被代理对象来调用这个方法，那么@Transactional这个是不会生效的
 
 同时如果某个方法是private的，那么@Transactional也会失效，因为cglib基于父子类来实现的，子类是不能重载父类的private方法的，所以无法很好的利用代理，也会导致@Transactional也是失效。
+
 
 
 ## 8. spring 自动装配
@@ -170,3 +211,26 @@ gloabal session-类似于session，不过仅在portlet web应用中才有意义�
 @EnableAsync
 @EnableWebMvc
 @EnableTransactionManagement 开启注解
+
+
+## 14. Spring 中后置处理器的作用
+Spring 中的后置处理器分为BeanFactory后置处理器和Bean后置处理器，它们是Spring底层源码架构设计中非常重要的一种机制，同时开发者也可以利用这两种后置处理器来进行扩展。BeanFactory 后置处理器表示针对BeanFactory的处理器，Spring启动过程中，会先创建出BeanFacoty实例，然后利用BeanFactory处理器来加工BeanFactory，比如Spring扫描的BeanFactory后置处理器实现的，而Bean后置处理器也类似，spring在创建一个Bean的过程中，首先会实例化得到一个对象，然后再利用Bean后置处理器来对该实例对象进行加工，比如我们常说的依赖注入就是基于一个Bean后置处理器来实现的，通过该Bean后置处理器来给实例对象中加了@Autowired注解的属性自动赋值，还比如我们常说的AOP，也是利用一个Bean后置处理器来实现的，基于原实例对象，判断是否需要进行AOP，如果需要，那么就基于原实例对象进行动态代理，生成一个代理对象。
+
+
+
+
+## 15.Spring 种的设计模式
+工厂模式：--BeanFactory
+          -- FactoryBean
+
+适配器模式 -- AdvisorAdapter接口，对Advisor进行了适配
+访问者模式 -- PropertyAccessor接口，属性访问器，用于访问和设置某个对象的某个属性
+
+装饰器模式 -- BeanWrapper
+代理模式  -- AOP
+模板模式  -- JDBCTemplate
+观察者模式 -- 事件监听模式
+策略模式  -- 
+委派模式
+责任链模式 --BeanPostProcessor
+

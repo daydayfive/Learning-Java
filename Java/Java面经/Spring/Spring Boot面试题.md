@@ -38,5 +38,11 @@ yaml是一种数据序列化语言。它通常用于配置文件。
 2. 在创建Spring容器过程中，会利用@ConditionalOnClass技术来判断当前classpath是否存在Tomcat依赖，如果存在则会生成一个启动Tomcat的Bean
 3. Spring 容器创建完之后，就会获取启动Tomcat的Bean，并创建Tomcat对象，并绑定端口等，然后启动Tomcat
 
-## 8.SpringBoot
+## 8.SpringBoot中的starter
+使用spring+springmvc使用，如果要引入mybatis框架，需要到xml中定义mybatis需要的bean
+
+而springboot中定义starter的jar包，写一个@Configuration配置类，将这些bean定义在里面，然后在starter包的META-INF/spring.factories中写入配置类，springboot会按照约定来加载该配置类
+
+开发人员只需要将相应的starter包依赖进应用，进行响应的属性配置，就可以直接进行代码开发，使用对应的功能了，比如mybatis-spring-boot-starter，spring-boot-starter-redis
+
 
