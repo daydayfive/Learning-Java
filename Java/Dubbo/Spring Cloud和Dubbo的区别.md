@@ -1,0 +1,8 @@
+# Spring Cloud 和Dubbo 的区别
+
+
+底层协议：springcloud基于http协议，dubbo基于tcp协议，决定了dubbo的性能相对会比较好
+注册中心：springcloud基于eureka，dubbo使用zookeeper
+模型定义：dubbo将一个接口定义为一个服务，springcloud则是将一个应用定义为一个服务
+springcloud是一个生态，而dubbo是springcloud生态中关于服务调用的一种解决方案（服务治理）
+
