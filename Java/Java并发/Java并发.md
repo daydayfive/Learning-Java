@@ -29,12 +29,13 @@
   * [WAITING](#6.4)
   * [TIMED_WAITING](#6.5)
   * [TERMINATED](#6.6)
- 
+
 
 ## <span id="1">一.使用线程</span>
 ### <span id="1.1">继承Thread类</span>
 重写run()方法，
 当调用start()方法时启动一个线程时，虚拟机会将该线程放入就绪队列中等待被调度，当一个线程被调度时会执行该线程的run()方法。
+
 ```java
 public class MyThread extends Thread {
     public void run() {
@@ -379,29 +380,29 @@ public static void main(String[] args) {
 ####1.锁的实现
 sychronized 是JVM实现的，而ReentrantLock是JDK实现的。
 
-####2.性能
+#### 2.性能
 新版本 Java 对 synchronized 进行了很多优化，例如自旋锁等，synchronized 与 ReentrantLock 大致相同。
 
-####3.等待可中断
+#### 3.等待可中断
 当持有锁的线程长期不释放锁的时候，正在等待的线程可以选择放弃等待，改为处理其他事情。
 
 ReentrantLock 可中断，而 synchronized 不行。
 
-####4.公平锁
+#### 4.公平锁
 公平锁是指多个线程在等待同一个锁时，必须按照申请锁的时间顺序来依次获得锁。
 
 synchronized 中的锁是非公平的，ReentrantLock 默认情况下也是非公平的，但是也可以是公平的。
 
-####5.锁绑定多个条件
+#### 5.锁绑定多个条件
 一个 ReentrantLock 可以同时绑定多个 Condition 对象。
 Condition 用来通知其他
 
 ###使用选择
 除非需要使用 ReentrantLock 的高级功能，否则优先使用 synchronized。这是因为 synchronized 是 JVM 实现的一种锁机制，JVM 原生地支持它，而 ReentrantLock 不是所有的 JDK 版本都支持。并且使用 synchronized 不用担心没有释放锁而导致死锁问题，因为 JVM 会确保锁的释放。
 
-##<span id="5">五.线程之间的写作</span>
+## <span id="5">五.线程之间的写作</span>
 当多个线程可以一起工作去解决某个问题时，如果某些部分必须在其他部分之间完成，那么就需要对线程进行协调。
-###<span id="5.1">join()</span>
+###<span id="5.1"> join()</span>
 在线程中调用另一个线程的 join() 方法，会将当前线程挂起，而不是忙等待，直到目标线程结束。
 
 对于以下代码，虽然 b 线程先启动，但是因为在 b 线程中调用了 a 线程的 join() 方法，b 线程会等待 a 线程结束才继续执行，因此最后能够保证 a 线程的输出先于 b 线程的输出。
@@ -487,7 +488,8 @@ public static void main(String[] args) {
 >before
 after
 
-####<span id="5.3">wait()和sleep()的区别</span>
+#### <span id="5.3">wait()和sleep()的区别</span>
+
 * wait()是Object的方法，而sleep()是Thread的静态方法;
 * wait()会释放锁，sleep()不会
 * wait()方法只能在同步方法或同步代码块中使用， 而sleep()可以在任何地方使用
@@ -539,11 +541,10 @@ public static void main(String[] args) {
 before
 after
 
-###Condition的优点
+### Condition的优点
 可以实现精准唤醒
 
-
-##<span id="lock">锁</span>
+## <span id="lock">锁</span>
 
 ### synchronized同步一个方法时 锁的对象是方法的调用者
 
