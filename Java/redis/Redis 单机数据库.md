@@ -83,7 +83,7 @@ redis > GET message
 * 设置键的**生存**时间可以通过 **EXPIRE** 或者**PEXPIRE** 命令。
 * 设置键的**过期**时间可以通过**EXPIREAT** 或者**PEXPIREAT** 命令。
 
-其实**`EXPIRE`、`PEXPIRE`、`EXPIREAT`**这三个命令都是通过**`PEXPIREAT`**命令来实现的。
+其实** `EXPIRE`、`PEXPIRE`、`EXPIREAT`**这三个命令都是通过**`PEXPIREAT`**命令来实现的。
 
 我们在redisDb结构体中还发现了`dict *expires;`属性，存放所有键过期的时间。
 

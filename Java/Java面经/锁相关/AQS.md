@@ -1,6 +1,6 @@
-#AQS
+# AQS
 
-##AQS是什么？
+## AQS是什么？
 AQS全称叫做AbstractQueuedSynchronizer,抽象队列同步器，是一个实现锁的一个【框架】，内部实现的关键就是维护了一个先进先出的队列（多线程征用资源被阻塞时会进入此队列）以及state（代表共享资源）状态变量。
 
 
@@ -20,7 +20,7 @@ AQS支持两种模式：
 
 
 
-##ReentrantLock 非公平锁为例讲讲 AQS
+## ReentrantLock 非公平锁为例讲讲 AQS
 
 ReentrantLock 默认是非公平锁
 
@@ -112,7 +112,7 @@ final boolean acquireQueued(final Node node, int arg) {
 11) 最后调用park 将当前线程挂起
 压缩一下：线程CAS获取锁失败，将当前线程入队列，把前驱节点状态设置为SIGNAL 状态，并将自己挂起。
 
-###unlock
+### unlock
 1）外界调用unlock方法时，实际上会调用AQS的 release()方法，而release方法会调用子类的tryRelease方法(又回到了ReentrantLock中)
 2）tryRelease 会把state 一直减，直至到0，说明当前线程已经把锁释放了
 3）随后从队尾往前找节点状态需要<0, 并离头节点最近的节点状态<0,并离头节点最近的节点进行唤醒
