@@ -1,19 +1,19 @@
-#集群
+# 17 集群
 
 
-##17 集群
+## 17 集群
 * Redis集群是Redis提供的分布式数据库方案，集群通过分片（sharding）来进行数据共享，并提供复制和故障转移功能。
 * **集群和哨兵的区别**：
   * 集群目的是解决单机Redis内存有限和并发问题，哨兵目的是高可用性。
   * 哨兵中每个实例是全量存储，集群是分布式存储，可以最大化利用内存。
 
-##17.1 节点
+## 17.1 节点
 * Redis集群通常有多个节点（node）组成，可以使用命令将原本独立的节点连接起来
 * 客户端使用命令： ```Cluster MEET <ip> <port>```,可以让node节点与执行的ip:port 进行握手（handshake），将其添加到当前集群中
 * ![图 1](../../images/29dcfa0797dd1fc980eb37397cb9b3c89100ebfef585054ac169f496bc489b3b.png)  
 
 
-##17.1.1 启动节点
+## 17.1.1 启动节点
 * 一个节点就是集群模式下的服务器，根据配置文件cluster-enabled决定是否为yes是开启服务器的集群模式
 * 节点可以执行单机模式中的所有功能，如
   * 文件事件处理器处理命令请求和返回命令回复
@@ -26,7 +26,7 @@
   * 集群模式下会使用clusterState结构，clusterNode结构，clusterLink结构
 
 
-##17.1.2 集群数据结构
+## 17.1.2 集群数据结构
 * 每个节点使用clusterNode结构保存节点的自己的当前状态，并为集群中其他节点都创建相应的clusterNode
 ```C
 struct clusterNode {
@@ -123,7 +123,7 @@ typedef struct clusterState {
   * 握手后，节点A将节点B的信息通过Gossip协议传播给集群中其他节点
 
 
-##17.2 槽指派
+## 17.2 槽指派
 * Redis集群使用分片的方式保存键值对：
   * 集群的整个数据库被分为16384个槽（slot），数据库的每个键都属于这16384个槽的其中一个，集群中的每个节点可以处理0个或最多16384个槽。
   * 当数据库的16384个槽都有节点在处理时，集群处于上线状态（ok）；相反地，如果数据库中有任何一个槽没有得到处理，那么集群处于下线状态（fail）。
@@ -132,7 +132,7 @@ typedef struct clusterState {
     * 如 127.0.0.1：7000>CLUSTER ADDSLOTS 0 1 2 3 4...5000
     * 指派127.0.0.1负责0-5000的slot
 
-###17.2.1 记录节点的槽指派信息
+### 17.2.1 记录节点的槽指派信息
 * clusterNode 的slots属性和numslot属性记录节点负责的slot
 ```c
 struct clusterNode {
@@ -154,12 +154,12 @@ struct clusterNode {
   * numslots属性：
     * 记录节点负责slot的数量，也是slots数组中1的数量
 
-###17.2.2 传播节点的槽指派信息
+### 17.2.2 传播节点的槽指派信息
 * 每个节点都会讲自己的slots数组通过消息发送给其他节点
 * 当节点A接收到节点B的slots数组，则节点A在自己的clusterState.nodes字典中查找节点B的clusterNode，并且将接收到的slots数组保存/更新到该clusterNode的slots数组
 
 
-###17.2.3记录集群所有槽的指派信息
+### 17.2.3记录集群所有槽的指派信息
 * ==经过传播信息，每个节点都会记录集群所有节点负责的slots，保存在每个节点的clusterState的slots数组==（不会nodes字典保存的数组）
 ```c
 typedef struct clusterState {
@@ -176,7 +176,7 @@ typedef struct clusterState {
 * clusterState.slots数组在查询某个slot由**哪个节点负责**时是O(1),clusterNode.slots数组在查询某个节点负责的所有slot时比较方便
 
 
-###17.2.4 CLUSTER ADDSLOTS命令的实现
+### 17.2.4 CLUSTER ADDSLOTS命令的实现
 
 CLUSTER ADDSLOTS 命令接收一个多个槽作为参数，并将所有输入的槽指派给接收该命令的节点负责：
 ```CLUSTER ADDSLOTS <slot> [slot ...] ```
