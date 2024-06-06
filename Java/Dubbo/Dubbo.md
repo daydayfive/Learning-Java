@@ -32,21 +32,21 @@
 随着互联网的发展，网站应用的规模不断扩大，常规的垂直应用架构已经无法应对，分布式服务架构以及流动计算架构势在必行，亟需一个治理系统确保架构有条不紊的演进。
 ![](images/2021-02-03-19-08-24.png)
 
-###单一应用架构(ORM)
+### 单一应用架构(ORM)
 当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是关键。
 
 缺点：1.如果要添加某一个功能的话就要把一个项目重新打包，在分别部署到每一个服务器当中去。2.如果后期项目越来越大的话单台服务器跑一个项目压力会很大的。会不利于维护，开发和程序的性能。
 ![](images/2021-02-03-19-15-28.png)
-###垂直应用架构(MVC)
+### 垂直应用架构(MVC)
 当访问量逐渐增大，单一应用增加机器带来的加速度越来越小，提升效率的方法之一是将应用拆成互不相干的几个应用，以提升效率。此时，用于加速前端页面开发的Web框架(MVC)是关键。
 （哪个应用的访问数量多就多增加几台服务器。）
 ![](images/2021-02-03-19-16-09.png)
 
-###分布式服务架构
+### 分布式服务架构
 当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式服务框架(RPC)是关键。
 ![](images/2021-02-03-19-19-34.png)
 
-###流动计算架构
+### 流动计算架构
 当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高机器利用率的资源调度和治理中心(SOA)是关键。
 
 
@@ -71,33 +71,38 @@
 
 
 
-#<span id=2>Dubbo核心概念</span>
+# <span id=2>Dubbo核心概念</span>
 >Dubbo 是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：**面向接口的远程方法调用，智能容错和负载均衡，服务自动注册和发现**。
 
-#<span id=3>Dubbo特性一览</span>
+# <span id=3>Dubbo特性一览</span>
 ![](images/2021-02-03-20-28-21.png)
 ##<span id=3.1>dubbo架构</span>
 ![](images/2021-02-03-20-30-51.png)
 
 该图来自Dubbo官网，描述了服务注册中心，服务提供方，服务消费方，服务监控中心之间的调用关系。
 
-###节点角色说明
+### 节点角色说明
 Provider:暴露服务的服务提供方
 Consumer:调用远程服务的服务消费方
 Registry:服务注册与发现的注册中心
 Monitor:统计服务的调用次数和调用时间的监控中心
 Container:服务运行容器
 
-###调用关系说明：
+### 调用关系说明：
 0.服务容器负责启动，加载，运行服务提供者。
+
 1.服务提供者在启动时，向注册中心注册自己提供的服务。
+
 2.服务消费者在启动时，向注册中心订阅自己所需的服务。
+
 3.注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。
+
 4.服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。
+
 5.服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。
 
 
-#<span id=4>dubbo的特性</span>
+# <span id=4>dubbo的特性</span>
 ##(1)服务注册中心
 * 相比Hessian类RPC框架，dubbo有自己的服务中心，写好的服务可以注册到服务中心，客户端从服务中心寻找服务，然后再到相应的服务提供者机器获取服务。通过服务中心可以实现集群，负载均衡，高可用等重要功能。
 
@@ -105,7 +110,7 @@ Container:服务运行容器
 
 * 服务使用者会从注册中心zookeeper中寻找服务，同一个服务可能会有多个提供者，dubbo会帮我们找到合适的服务提供者，也就是针对服务提供者的负载均衡。
 
-##(2)负载均衡
+## (2)负载均衡
 * 当同一个服务有多个提供者在提供服务时，客户端如何正确的选择提供者实现负载均衡呢？dubbo也给我们提供了几种方案：
 * random ==随机==选提供者，并可以给提供者设置权重
 * roundrobin ==轮询==选择提供者
@@ -117,7 +122,7 @@ Container:服务运行容器
 ><dubbo:reference id="xxxService"interface="com.alibaba.xxx.XxxService"url="dubbo://localhost:20890"/>
 
 
-##(4)服务版本，服务分组
+## (4)服务版本，服务分组
 在dubbo配置文件中可以通过制定版本实现连接制定提供者，也就是通过服务版本可以控制服务的不兼容升级，当同一个服务有多种实现时，可以使用服务分组进行区分。
 
 
@@ -129,15 +134,15 @@ Container:服务运行容器
 ![](images/2021-02-04-11-13-56.png)
 
 
-#<span id=6>Dubbo环境搭建，创建提供者、消费者项目</span>
+# <span id=6>Dubbo环境搭建，创建提供者、消费者项目</span>
 基于以下图实现服务提供者、消费者
 ![](images/2021-02-04-11-21-16.png)
 
 按照dubbo文档进行快速启动：
 服务模型以及服务接口等公共的服务接口将被放在一个项目中：
 
-##服务提供者
-###定义服务接口（放在公共文件中）
+## 服务提供者
+### 定义服务接口（放在公共文件中）
 DemoService.java ：
 ```java
 package org.apache.dubbo.demo;
@@ -148,7 +153,7 @@ public interface DemoService {
 ```
 
 
-###在服务提供方实现接口
+### 在服务提供方实现接口
 DemoServiceImpl.java :
 ```java
 package org.apache.dubbo.demo.provider;
@@ -163,7 +168,7 @@ public class DemoServiceImpl implements DemoService {
 
 ```
 
-###需要用spring配置声明暴露服务，将服务接口暴露出去
+### 需要用spring配置声明暴露服务，将服务接口暴露出去
 provider.xml
 ```java
 <?xml version="1.0" encoding="UTF-8"?>
@@ -190,7 +195,7 @@ provider.xml
 </beans>
 ```
 
-###加载spring 配置
+### 加载spring 配置
 Provider.java：
 ```java
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -204,7 +209,7 @@ public class Provider {
 }
 ```
 
-###maven依赖
+### maven依赖
 因为注册中心使用了zookeeper，因此引入zookeeper客户端
 并且引入dubbo
 ```xml
@@ -221,8 +226,8 @@ public class Provider {
         </dependency>
 ```
 
-##服务消费者
-###在消费者工程中引入依赖
+## 服务消费者
+### 在消费者工程中引入依赖
 ```xml
 <!--dubbo-->
         <dependency>
@@ -237,7 +242,7 @@ public class Provider {
             <version>2.12.0</version>
         </dependency>
 ```
-###创建consumer.xml
+### 创建consumer.xml
 ```java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -264,7 +269,7 @@ public class Provider {
 </beans>
 ```
 
-###对消费者实现类加上注解注入
+### 对消费者实现类加上注解注入
 ```java
 
 @Service
@@ -291,7 +296,7 @@ public class OrderServiceImpl implements OrderService {
 
 ```
 
-###编写启动类
+### 编写启动类
 ```java
 public class ConsumerApplication {
     public static void main(String[] args) throws IOException {
@@ -312,13 +317,13 @@ localhost:7001
 
 ![](images/2021-02-05-16-52-56.png)
 
-#<span id=7>dubbo监控中心</span>
+# <span id=7>dubbo监控中心</span>
 
-##dubbo-admin
+## dubbo-admin
 ==图形化的服务管理页面==，安装时需要制定注册中心地址，即可从注册中心获取到所有的提供者/消费者进行配置管理。
 
 
-##dubbo-monitor-simple
+## dubbo-monitor-simple
 简单的监控中心
 进入dubbo-monitor-simple文件，执行cmd命令，mvn package打包成jar包,然后
 将 dubbo-monitor-simple-2.0.0-assembly.tar.gz 压缩包解压至当前文件夹，解压后config文件查看properties的配置是否是本地的zookeeper。
@@ -378,7 +383,7 @@ Dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会�
 <dubbo:registry check="false" />
 ```
 
-##3.全局超时配置
+## 3.全局超时配置
 ```xml
 
 <dubbo:provider timeout="5000" />
@@ -389,7 +394,7 @@ Dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会�
 </dubbo:provider>
 ```
 
-##4.配置原则（不同粒度配置的覆盖关系）
+## 4.配置原则（不同粒度配置的覆盖关系）
 以 timeout 为例，下图显示了配置的查找顺序，其它 retries, loadbalance, actives 等类似：
 
 * 方法级优先，接口级次之，全局配置再次之。
@@ -460,7 +465,7 @@ Dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会�
 ###<span id=10.2>2.集群下dubbo负载均衡配置</span>
 在集群负载均衡时，Dubbo 提供了多种均衡策略，缺省为 random 随机调用。
 
-####Random LoadBalance
+#### Random LoadBalance
 ![](images/2021-02-05-21-44-18.png)
 随机，按权重设置随机概率。 在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重。
 ####RoundRobin LoadBalance
@@ -479,7 +484,7 @@ Dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会�
 缺省用 160 份虚拟节点，如果要修改，请配置 <dubbo:parameter key="hash.nodes" value="320" />
 
 
-####配置
+#### 配置
 服务段服务级别：
 ```xml
 <dubbo:service interface="..." loadbalance="roundrobin" />
@@ -503,7 +508,7 @@ Dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会�
 
 ##<span id=10.3>整合hystrix，服务熔断与降级处理</span>
 
-###1.服务降级
+### 1.服务降级
 **当服务器压力剧增的情况下，根据实际业务情况及流量，对一些服务和页面有策略的不处理或换种简单的方式处理，从而释放服务器资源以保证核心交易正常运作或高效运作。**
 可以通过服务降级功能临时屏蔽某个出错的非关键服务，并定义降级后的返回策略。
 向注册中心写入动态配置覆盖规则：
@@ -517,7 +522,7 @@ mock=force:return+null 表示消费方对该服务的方法调用都直接返回
 还可以改为 mock=fail:return+null 表示消费方对该服务的方法调用在失败后，再返回 null 值，不抛异常。用来容忍不重要服务不稳定时对调用方的影响。
 
 
-###2.集群容错
+### 2.集群容错
 在集群调用失败时，Dubbo 提供了多种容错方案，缺省为 failover 重试。
 ![](images/2021-02-05-21-57-11.png)
 ==Failover Cluster==
@@ -606,12 +611,12 @@ netty基本原理，可参考https://www.sohu.com/a/272879207_463994
 * transport网络传输层：抽象mina和netty为同一接口，以Message为中心，扩展接口为i```Channel,Transporter,Client,Server,Codec```
 * serialize数据序列化层：可复用的一些工具，扩展接口为```Serialization,ObjectInput,ObjectOutput,ThreadPool   ```
 
-###dubbo-启动解析，加载配置信息
+### dubbo-启动解析，加载配置信息
 
 spring对配置文件解析，spring有dubbo的解析
 ![](images/2021-02-06-19-04-47.png)
 
-###dubbo服务暴露流程
+### dubbo服务暴露流程
 具体看源码
 ![](images/2021-02-06-19-21-59.png)
 ###dubbo服务引用流程

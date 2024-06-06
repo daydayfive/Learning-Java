@@ -1,4 +1,4 @@
-#发布与订阅
+# 发布与订阅
 
 * Redis 的发布与订阅由 ==PUBLISH,SUBSCRIBE,PSUBSCTIBE==
 * 通过SUBSCRIBE命令，客户端可以订阅一个或多个频道，从而称为这些频道的订阅者（subscriber）：每当有其他客户端向被订阅的频道发送消息时，频道的所有订阅者都会受到这条消息

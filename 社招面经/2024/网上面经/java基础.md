@@ -69,3 +69,19 @@ AOP切面类定义问题：如果在切面类内部定义了切点，并且切�
 从Spring上下文获取增强后的实例引用：这与上述方法原理类似，都是从Spring容器中获取代理对象来确保切面生效3。
 利用AopContext：在主类入口上设置exporseProxy=true，这样可以在需要的时候获取到代理对象的引用。
 
+
+
+
+@Transactional原理
+
+事务开始时，通过AOP机制，生成一个代理connection对象，
+并将其放入 DataSource 实例的某个与 DataSourceTransactionManager 相关的某处容器中。
+在接下来的整个事务中，客户代码都应该使用该 connection 连接数据库，
+执行所有数据库命令。
+[不使用该 connection 连接数据库执行的数据库命令，在本事务回滚的时候得不到回滚]
+（物理连接 connection 逻辑上新建一个会话session；
+DataSource 与 TransactionManager 配置相同的数据源）
+
+事务结束时，回滚在第1步骤中得到的代理 connection 对象上执行的数据库命令，
+然后关闭该代理 connection 对象。
+（事务结束后，回滚操作不会对已执行完毕的SQL操作命令起作用）
